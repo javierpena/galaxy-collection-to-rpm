@@ -1,0 +1,34 @@
+Name:           ansible-collection-{{ info.namespace.name }}-{{ info.collection.name }}
+Version:        {{ info.version }}
+Release:        1
+Summary:        {{ info.metadata.description }}
+License:        {{ info.metadata.license[0] }}
+URL:            {{ info.metadata.homepage }}
+Source0:        {{ info.download_url }}
+BuildArch:      noarch
+
+Requires:       ansible
+{% for dep in info.metadata.dependencies -%}
+Requires:       ansible-collection-{{ dep }} >= {{ info.metadata.dependencies[dep] }}
+{% endfor %}
+
+%description
+{{ info.metadata.description }}
+
+%prep
+%autosetup -c ansible-collection-{{ info.namespace.name }}-{{ info.collection.name }}-%{version}-%{release}
+
+%build
+
+
+%install
+install -d -m 0755 %{buildroot}/%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
+cp -rp * %{buildroot}/%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
+
+%files
+{% if info.metadata.license_file %}%license {{ info.metadata.license_file }} {%- endif %}
+{% if info.metadata.readme %}%doc {{ info.metadata.readme }} {%- endif %}
+%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
+
+
+%changelog
