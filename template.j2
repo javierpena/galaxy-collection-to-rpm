@@ -2,7 +2,7 @@ Name:           ansible-collection-{{ info.namespace.name }}-{{ info.collection.
 Version:        {{ info.version }}
 Release:        1
 Summary:        {{ info.metadata.description }}
-License:        {{ info.metadata.license[0] }}
+License:        {{ info.metadata.license[0] | default('UNKNOWN') }}
 URL:            {{ info.metadata.homepage }}
 Source0:        {{ info.download_url }}
 BuildArch:      noarch
