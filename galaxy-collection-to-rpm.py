@@ -34,6 +34,10 @@ def create_spec(collection, output_file):
         sys.exit(1)
 
     collection_info = r.json()
+    if 'download_url' in collection_info and 'version' in collection_info:
+        collection_info['download_url'] = collection_info['download_url'].replace(
+            collection_info['version'], '%{version}')
+
     jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(['.']))
     jinja_template = jinja_env.get_template('template.j2')
     content = jinja_template.render(info=collection_info)
