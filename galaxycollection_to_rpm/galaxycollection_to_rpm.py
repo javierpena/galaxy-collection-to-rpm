@@ -19,17 +19,13 @@ import os
 import requests
 import sys
 
+from pkg_resources import resource_filename
+
 
 def create_spec(collection, output_file):
     # We will try to find the template file in several locations
-    template_file = os.path.realpath(
-                        os.path.join(os.path.abspath(
-                            __file__), '../..', 'template.j2'
-                        )
-                    )
-    if not os.path.exists(template_file):
-        template_file = os.path.join(
-            sys.prefix, 'share/galaxy-collection-to-rpm/template.j2')
+    template_file = resource_filename(__name__, "data/template.j2")
+
     if not os.path.exists(template_file):
         template_file = '/usr/share/galaxy-collection-to-rpm/template.j2'
     if not os.path.exists(template_file):
