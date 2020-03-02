@@ -16,9 +16,16 @@ Installation
 ------------
 
 The script is provided as a Python package. You can install it on a local
-virtual environment, or as an RPM package once it is prepared. You can also
-run directly ``python galaxycollection_to_rpm/galaxycollection_to_rpm.py``
-if needed, from the git checkout.
+virtual environment, or as an RPM package. There is a Copr repository ready to
+use:
+
+.. code-block:: shell-session
+
+  $ sudo dnf copr enable jpena/galaxy-collection-to-rpm 
+  $ sudo dnf install galaxycollection-to-rpm
+
+You can also run ``python galaxycollection_to_rpm/galaxycollection_to_rpm.py``
+directly if needed, from the git checkout.
 
 Usage
 -----
