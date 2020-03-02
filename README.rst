@@ -9,21 +9,30 @@ Requirements
 ------------
 
 - Jinja2
+- pbr
 - requests
+
+Installation
+------------
+
+The script is provided as a Python package. You can install it on a local
+virtual environment, or as an RPM package once it is prepared. You can also
+run directly ``python galaxycollection_to_rpm/galaxycollection_to_rpm.py``
+if needed, from the git checkout.
 
 Usage
 -----
 
 .. code-block:: shell-session
 
-  $ ./galaxy-collection-to-rpm.py --collection <collection-name>
+  $ galaxy-collection-to-rpm --collection <collection-name>
 
 This command-line will send the resulting spec file to standard output. You can
 also specify the target file using:
 
 .. code-block:: shell-session
 
-  $ ./galaxy-collection-to-rpm.py --collection <collection-name> --output-file file.spec
+  $ galaxy-collection-to-rpm --collection <collection-name> --output-file file.spec
 
 Make sure you check the generated spec file, since some fields may require
 adjustments. One example is the license, which may not be using the names

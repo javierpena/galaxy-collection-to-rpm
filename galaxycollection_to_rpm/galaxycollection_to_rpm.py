@@ -15,11 +15,27 @@
 
 import argparse
 import jinja2
+import os
 import requests
 import sys
 
 
 def create_spec(collection, output_file):
+    # We will try to find the template file in several locations
+    template_file = os.path.realpath(
+                        os.path.join(os.path.abspath(
+                            __file__), '../..', 'template.j2'
+                        )
+                    )
+    if not os.path.exists(template_file):
+        template_file = os.path.join(
+            sys.prefix, 'share/galaxy-collection-to-rpm/template.j2')
+    if not os.path.exists(template_file):
+        template_file = '/usr/share/galaxy-collection-to-rpm/template.j2'
+    if not os.path.exists(template_file):
+        print('Could not find template.j2 file. Please check your setup')
+        sys.exit(1)
+
     r = requests.get('https://galaxy.ansible.com/api/v2/collections/%s/' %
                      collection.replace('-', '/').replace('.', '/'))
     if r.status_code != 200:
@@ -38,7 +54,8 @@ def create_spec(collection, output_file):
         collection_info['download_url'] = collection_info['download_url'].replace(
             collection_info['version'], '%{version}')
 
-    jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(['.']))
+    jinja_env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader([os.path.dirname(template_file)]))
     jinja_template = jinja_env.get_template('template.j2')
     content = jinja_template.render(info=collection_info)
 

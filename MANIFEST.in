@@ -1,0 +1,3 @@
+include *.j2
+exclude .gitignore
+exclude .gitreview
