@@ -6,6 +6,7 @@ License:        {{ info.metadata.license[0] | default('UNKNOWN') }}
 URL:            {{ info.metadata.homepage }}
 Source0:        {{ info.download_url }}
 BuildArch:      noarch
+BuildRequires:  ansible-packaging
 
 Requires:       ansible
 {% for dep in info.metadata.dependencies -%}
@@ -13,22 +14,22 @@ Requires:       ansible-collection-{{ dep }} >= {{ info.metadata.dependencies[de
 {% endfor %}
 
 %description
-{{ info.metadata.description }}
+%{summary}
 
 %prep
-%autosetup -c ansible-collection-{{ info.namespace.name }}-{{ info.collection.name }}-%{version}-%{release}
+%autosetup -c %{name}-%{version}-%{release}
+find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' +
 
 %build
+%ansible_collection_build
 
 
 %install
-install -d -m 0755 %{buildroot}/%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
-cp -rp * %{buildroot}/%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
+%ansible_collection_install
 
-%files
+%files -f %{ansible_collection_filelist}
 {% if info.metadata.license_file %}%license {{ info.metadata.license_file }} {%- endif %}
 {% if info.metadata.readme %}%doc {{ info.metadata.readme }} {%- endif %}
-%{_datadir}/ansible/collections/ansible_collections/{{ info.namespace.name }}/{{ info.collection.name }}/
 
 
 %changelog
