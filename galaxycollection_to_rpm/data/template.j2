@@ -1,7 +1,7 @@
 Name:           ansible-collection-{{ info.namespace.name }}-{{ info.collection.name }}
 Version:        {{ info.version }}
 Release:        1
-Summary:        {{ info.metadata.description }}
+Summary:        {{ info.metadata.description | default('None') }}
 License:        {{ info.metadata.license[0] | default('UNKNOWN') }}
 URL:            {{ info.metadata.homepage }}
 Source0:        {{ info.download_url }}
