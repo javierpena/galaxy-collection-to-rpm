@@ -32,15 +32,15 @@ def create_spec(collection, output_file):
         print('Could not find template.j2 file. Please check your setup')
         sys.exit(1)
 
-    r = requests.get('https://galaxy.ansible.com/api/v2/collections/%s/' %
+    r = requests.get('https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/%s/' %
                      collection.replace('-', '/').replace('.', '/'))
     if r.status_code != 200:
         print('Error %s accessing %s' % (r.status_code, r.url))
         sys.exit(1)
 
-    latest_version = r.json()['latest_version']['version']
-    latest_v_url = r.json()['latest_version']['href']
-    r = requests.get(latest_v_url)
+    latest_version = r.json()['highest_version']['version']
+    latest_v_url = r.json()['highest_version']['href']
+    r = requests.get("https://galaxy.ansible.com%s" % latest_v_url)
     if r.status_code != 200:
         print('Error %s accessing %s' % (r.status_code, r.url))
         sys.exit(1)
